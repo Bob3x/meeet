@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/meeet/static/css/main.f855e6bc.css",
+    "main.js": "/meeet/static/js/main.0d6b2103.js",
+    "static/js/453.9fb66287.chunk.js": "/meeet/static/js/453.9fb66287.chunk.js",
+    "service-worker.js": "/meeet/service-worker.js",
+    "static/media/logo.svg": "/meeet/static/media/logo.103b5fa18196d5665a7e12318285c916.svg",
+    "index.html": "/meeet/index.html",
+    "main.f855e6bc.css.map": "/meeet/static/css/main.f855e6bc.css.map",
+    "main.0d6b2103.js.map": "/meeet/static/js/main.0d6b2103.js.map",
+    "453.9fb66287.chunk.js.map": "/meeet/static/js/453.9fb66287.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.0d6b2103.js"
+  ]
+}
