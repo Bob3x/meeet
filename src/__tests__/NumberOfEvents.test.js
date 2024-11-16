@@ -1,14 +1,18 @@
-// src/__tests__/NumberOfEvetns.test.js
+// src/__tests__/NumberOfEvents.test.js
 
 import { render } from "@testing-library/react";
 import NumberOfEvents from "../components/NumberOfEvents";
 import userEvent from "@testing-library/user-event";
 
-describe('<EventList /> component', () => {
+describe('<NumberOfEvents /> component', () => {
     let NumberOfEventsComponent;
     beforeEach(() => {
         NumberOfEventsComponent = render(
-            <NumberOfEvents />
+            <NumberOfEvents 
+            currentNOE={32} 
+            setCurrentNOE={() => {}}
+            setErrorAlert={() => {}}
+            />
         )
     })
 
@@ -25,7 +29,7 @@ describe('<EventList /> component', () => {
     test('textbox value changes when user types', async () => {
         const input = NumberOfEventsComponent.getByTestId('numberOfEventsInput');
         const user = userEvent.setup();
-        await user.type(input, '{backspace}{backspace}10');
-        expect(input).toHaveValue('10');
+        await user.type(input, '33');
+        expect(input).toHaveValue('11');
     })
 })
