@@ -6,7 +6,7 @@ import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
 import { extractLocations, getEvents } from './api';
 import { InfoAlert, ErrorAlert, WarningAlert } from './components/Alert';
-import { mockData } from './mock-data';
+
 import './App.css';
 
 const App = () => {
@@ -19,8 +19,9 @@ const App = () => {
   const [warningAlert, setWarningAlert] = useState("");
 
   useEffect(() => {
-    if (!navigator.onLine) {
-      setWarningAlert("")
+    // Check online status
+    if (navigator.onLine) {
+      setWarningAlert("");
     } else {
       setWarningAlert("You are currently offline");
     }
@@ -28,13 +29,17 @@ const App = () => {
   }, [currentCity, currentNOE]);
 
   const fetchData = async () => {
-    const allEvents = await getEvents();
-    const filteredEvents = currentCity === "See all cities" ?
-      allEvents :
-      allEvents.filter(event => event.location === currentCity)
-    setEvents(filteredEvents.slice(0, currentNOE));
-    setAllLocations(extractLocations(allEvents));
-  }
+    try {
+      const allEvents = await getEvents();
+      const filteredEvents = currentCity === "See all cities" 
+        ? allEvents
+        : allEvents.filter(event => event.location === currentCity);
+      setEvents(filteredEvents.slice(0, currentNOE));
+      setAllLocations(extractLocations(allEvents));
+    } catch (error) {
+      setErrorAlert("Failed to fetch events");
+    }
+  };
 
   return (
     <div className="App">
