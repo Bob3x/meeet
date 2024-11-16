@@ -36,7 +36,7 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
 
       useEffect(() => {
         setSuggestions(allLocations);
-      }, [`${allLocations}`]);
+      }, [allLocations]);
 
     return (
         <div id="city-search">
@@ -47,6 +47,7 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
         value={query}
         onFocus={() => setShowSuggestions(true)}
         onChange={handleInputChanged}
+        
       />
       {showSuggestions ? <ul className="suggestions">
         {suggestions.map((suggestion) => {
