@@ -83,11 +83,10 @@ describe('<App /> integration', () => {
 
         const NumberOfEventsDOM = AppDOM.querySelector('#number-of-events');
         const NumberOfEventsInput = within(NumberOfEventsDOM).queryByTestId('numberOfEventsInput');
-
-        await user.type(NumberOfEventsInput, '{backspace}{backspace}10');
-        await user.clear(NumberOfEventsInput);
         
-
+        await user.clear(NumberOfEventsInput);
+        await user.type(NumberOfEventsInput, '{backspace}{backspace}10');
+                
         await waitFor(() => {
             const EventListDOM = AppDOM.querySelector('#event-list');
             const allRenderedEventItems = within(EventListDOM).queryAllByRole('listitem');
