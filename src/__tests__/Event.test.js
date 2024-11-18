@@ -51,7 +51,7 @@ describe('<Event /> component', () => {
         
         const details = EventComponent.queryByTestId('event-details');
         expect(details).toBeInTheDocument();
-        expect(details).toHaveTextContent(event.description);
+        expect(details.textContent.replace(/\s+/g, ' ').trim()).toBe(event.description.replace(/\s+/g, ' ').trim());
         expect(button.textContent).toBe('Hide Details');
     });
 

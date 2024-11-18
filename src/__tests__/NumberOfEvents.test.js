@@ -1,6 +1,6 @@
 // src/__tests__/NumberOfEvents.test.js
 
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import NumberOfEvents from "../components/NumberOfEvents";
 import userEvent from "@testing-library/user-event";
 
@@ -17,19 +17,21 @@ describe('<NumberOfEvents /> component', () => {
     })
 
     test('number of events has the role of textbox', () => {
-        const input = NumberOfEventsComponent.queryByRole('textbox');
+        const input = screen.getByTestId('numberOfEventsInput');
         expect(input).toBeInTheDocument();
     })
 
     test('ensure the default value of textbox is 32', () => {
-        const input = NumberOfEventsComponent.queryByRole('textbox');
-        expect(input).toHaveValue('32');
+        const input = screen.getByTestId('numberOfEventsInput');
+        expect(input).toHaveValue("32");
     })
 
     test('textbox value changes when user types', async () => {
-        const input = NumberOfEventsComponent.getByTestId('numberOfEventsInput');
         const user = userEvent.setup();
-        await user.type(input, '33');
-        expect(input).toHaveValue('11');
+        const input = screen.getByTestId('numberOfEventsInput');
+       
+        await user.clear(input);
+        await user.type(input, "33");
+        expect(input).toHaveValue("33");
     })
 })

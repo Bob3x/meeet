@@ -9,7 +9,7 @@ import App from "../App";
 describe('<EventList /> component', () => {
     let EventListComponent;
     beforeEach(() => {
-        EventListComponent = render(<EventList />);
+        EventListComponent = render(<EventList events={[]} />);
     })
 
     test('has an element with "list" role', () => {
