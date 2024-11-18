@@ -4,9 +4,15 @@ import Event from './Event';
 
 const EventList = ({ events }) => {
     return (
-      <ul id="event-list">
-        {events ? events.map(event => <Event key={event.id} event={event} />): null}
+      <div>
+        {!events ? (
+          <p>No events found</p>
+        ) : (
+          <ul id="event-list">
+        {events.map(event => <Event key={event.id} event={event} />)}
       </ul>
+        )}
+      </div>
     );
   }
   

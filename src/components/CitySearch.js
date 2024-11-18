@@ -1,6 +1,7 @@
 // src/components/CitySearch.js
 
 import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 
 const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
     const [showSuggestions, setShowSuggestions] = useState(false);
@@ -8,14 +9,7 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
     const [suggestions, setSuggestions] = useState([]);
 
     
-    const handleItemClicked = (event) => {
-        const value = event.target.textContent;
-        setQuery(value);
-        setShowSuggestions(false); // to hide the list
-        setCurrentCity(value);
-        setInfoAlert("");
-        
-      };
+   
 
       const handleInputChanged = (event) => {
         const value = event.target.value;
@@ -29,7 +23,7 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
         if (filteredLocations.length === 0) {
           infoText = 'We can not find the city you are looking for. Please try different city';
         } else {
-          infoText = '';
+          infoText = "";
         }
         setInfoAlert(infoText);
       };
@@ -37,6 +31,14 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
       useEffect(() => {
         setSuggestions(allLocations);
       }, [allLocations]);
+
+      const handleItemClicked = (event) => {
+        const value = event.target.textContent;
+        setQuery(value);
+        setShowSuggestions(false); // to hide the list
+        setCurrentCity(value);
+        setInfoAlert("");
+      };
 
     return (
         <div id="city-search">
@@ -60,5 +62,10 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
         </div>
     )
 }
+CitySearch.propTypes = {
+  allLocations: PropTypes.array.isRequired,
+  setCurrentCity: PropTypes.func.isRequired,
+  setInfoAlert: PropTypes.func.isRequired
+};
 
 export default CitySearch;
