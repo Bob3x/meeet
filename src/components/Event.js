@@ -7,21 +7,22 @@ const Event = ({ event }) => {
     return (
         <li className="event">
             <div className="event-summary">
-                <h2>{event.summary}</h2>
-                <p className="location">{event.location}</p>
-                <p className="event-created">{event.created}</p>
+                <h2>{event && event.summary}</h2>
+                <p className="location">{event && event.location}</p>
+                <p className="event-created">{event && event.created}</p>
             </div>
-            {showDetails ? (
+            {showDetails ? 
                 <div data-testid="event-details">
-                    <p>{event.description}</p>
+                    <p>{event && event.description}</p>
                 </div>
-            ) : null}
+             : null
+             }
             <button className="details-btn"
                 onClick={() => setShowDetails(!showDetails)}>
                     {showDetails ? "Hide Details" : "Show Details"}
                 </button>
         </li>
     );
-}
+};
 
 export default Event;
