@@ -14,6 +14,6 @@ const EventList = ({ events }) => {
         )}
       </div>
     );
-  }
+  };
   
   export default EventList;
