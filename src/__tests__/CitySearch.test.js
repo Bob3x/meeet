@@ -9,10 +9,10 @@ import App from "../App";
 
 describe('<CitySearch /> component', () => {
     let CitySearchComponent;
-    // const mockSetInfoAlert = jest.fn();
+    const mockSetInfoAlert = jest.fn();
     
     beforeEach(() => {
-        CitySearchComponent = render(<CitySearch allLocations={[]} setCurrentCity={() => {}} setInfoAlert={setInfoAlert} />);
+        CitySearchComponent = render(<CitySearch allLocations={[]} setCurrentCity={() => {}} setInfoAlert={mockSetInfoAlert} />);
     })
 
     test('renders text input', () => {
@@ -40,7 +40,7 @@ describe('<CitySearch /> component', () => {
         const user = userEvent.setup();
         const allEvents = await getEvents();
         const allLocations = extractLocations(allEvents);
-        CitySearchComponent.rerender(<CitySearch allLocations={allLocations} setCurrentCity={() => {}} setInfoAlert={setInfoAlert} />)
+        CitySearchComponent.rerender(<CitySearch allLocations={allLocations} setCurrentCity={() => {}} setInfoAlert={mockSetInfoAlert} />)
         const cityTextBox = CitySearchComponent.queryByRole('textbox');
         await user.type(cityTextBox, 'Berlin');
         
@@ -52,7 +52,7 @@ describe('<CitySearch /> component', () => {
         const user = userEvent.setup();
         const allEvents = await getEvents(); 
         const allLocations = extractLocations(allEvents);
-        CitySearchComponent.rerender(<CitySearch allLocations={allLocations} setCurrentCity={() => {}} setInfoAlert={setInfoAlert} />);
+        CitySearchComponent.rerender(<CitySearch allLocations={allLocations} setCurrentCity={() => {}} setInfoAlert={mockSetInfoAlert} />);
     
         const cityTextBox = CitySearchComponent.queryByRole('textbox');
         await user.type(cityTextBox, "Berlin");
