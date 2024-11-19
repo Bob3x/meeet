@@ -9,7 +9,7 @@ import App from "../App";
 
 describe('<CitySearch /> component', () => {
     let CitySearchComponent;
-    const setInfoAlert = jest.fn();
+    // const mockSetInfoAlert = jest.fn();
     
     beforeEach(() => {
         CitySearchComponent = render(<CitySearch allLocations={[]} setCurrentCity={() => {}} setInfoAlert={setInfoAlert} />);
@@ -52,7 +52,7 @@ describe('<CitySearch /> component', () => {
         const user = userEvent.setup();
         const allEvents = await getEvents(); 
         const allLocations = extractLocations(allEvents);
-        CitySearchComponent.rerender(<CitySearch allLocations={allLocations} setCurrentCity={() => {}} />);
+        CitySearchComponent.rerender(<CitySearch allLocations={allLocations} setCurrentCity={() => {}} setInfoAlert={setInfoAlert} />);
     
         const cityTextBox = CitySearchComponent.queryByRole('textbox');
         await user.type(cityTextBox, "Berlin");
