@@ -21,17 +21,16 @@ const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
 
     return (
        <div id="number-of-events">
-            <label>
-                Number of Events:
+            <label htmlFor="numberOfEventsInput">Number of Events:</label>
             <input 
                 type="text"
                 value={number}
                 onChange={handleInputChanged}
                 data-testid="numberOfEventsInput"
+                className="numberOfEventsInput"
             />
-            </label>
         </div>
-    )
+    );
 };
 
 NumberOfEvents.propTypes = {
