@@ -19,6 +19,19 @@ const App = () => {
   const [warningAlert, setWarningAlert] = useState("");
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const allEvents = await getEvents();
+        const filteredEvents = currentCity === "See all cities" 
+          ? allEvents
+          : allEvents.filter(event => event.location === currentCity);
+        setEvents(filteredEvents.slice(0, currentNOE));
+        setAllLocations(extractLocations(allEvents));
+      } catch (error) {
+        setErrorAlert("Failed to fetch events");
+      }
+    };
+
     // Check online status
     if (navigator.onLine) {
       setWarningAlert("");
@@ -27,19 +40,6 @@ const App = () => {
     }
     fetchData();
   }, [currentCity, currentNOE]);
-
-  const fetchData = async () => {
-    try {
-      const allEvents = await getEvents();
-      const filteredEvents = currentCity === "See all cities" 
-        ? allEvents
-        : allEvents.filter(event => event.location === currentCity);
-      setEvents(filteredEvents.slice(0, currentNOE));
-      setAllLocations(extractLocations(allEvents));
-    } catch (error) {
-      setErrorAlert("Failed to fetch events");
-    }
-  };
 
   return (
     <div className="App">
@@ -63,6 +63,6 @@ const App = () => {
       <EventList events={events} />
     </div>
   );
-}
+};
 
 export default App;
