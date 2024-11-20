@@ -90,24 +90,13 @@ export const getEvents = async () => {
     if (token) {
       removeQuery();
       const url =  "https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/get-events" + "/" + token;
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const result = await response.json();
-        if (result && result.events) {
-          localStorage.setItem("lastEvents", JSON.stringify(result.events));
-          NProgress.done();
-          return result.events;
-        } else {
-          NProgress.done();
-          return null;
-        }
-      } catch (error) {
-        console.error('API error:', error);
+      const response = await fetch(url);
+      const result = await response.json();
+      if (result) {
         NProgress.done();
-        return null; 
+        localStorage.setItem("lastEvents", JSON.stringify(result.events));
+        return result.events;
+      } else return null;
     }
   };
 
@@ -125,4 +114,3 @@ export const getEvents = async () => {
       window.history.pushState("", "", newurl);
     }
   }
-};
