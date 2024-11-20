@@ -96,7 +96,7 @@ export const getEvents = async () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const result = await response.json();
-        if (result) {
+        if (result && result.events) {
           localStorage.setItem("lastEvents", JSON.stringify(result.events));
           NProgress.done();
           return result.events;
