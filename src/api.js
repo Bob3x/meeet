@@ -18,13 +18,6 @@ export const extractLocations = (events) => {
   return locations;
 };
 
-/**
- *
- * This function will fetch the list of all events
- */
-
-
-
 const checkToken = async (accessToken) => {
     const response = await fetch(
       `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
@@ -65,26 +58,35 @@ const checkToken = async (accessToken) => {
       const { access_token } = await response.json();
       access_token && localStorage.setItem("access_token", access_token);
       return access_token;
-    } catch (error) {
+      } catch (error) {
       console.error('Token error:', error);
       error.json();
-    }
-   };
+      }
+  };
+
+/**
+ *
+ * This function will fetch the list of all events
+ */
 
 export const getEvents = async () => {
     NProgress.start();
-
+    
+    // Use mock data for localhost
     if (window.location.href.startsWith("http://localhost")) {
       NProgress.done();
       return mockData;
     }
 
+    // Check if offline
     if (!navigator.onLine){
       const events = localStorage.getItem("lastEvents");
       NProgress.done();
-      return events ? JSON.parse(events):[];
+      // Return cached events or empty array if no cache
+      return events ? JSON.parse(events) : [];
     }
 
+    try {
     const token = await getAccessToken();
 
     if (token) {
@@ -94,11 +96,19 @@ export const getEvents = async () => {
       const result = await response.json();
       if (result) {
         NProgress.done();
+        // Cache the events for offline use
         localStorage.setItem("lastEvents", JSON.stringify(result.events));
         return result.events;
-      } else return null;
+        } 
     }
-  };
+  return null;
+  } catch (error) {
+    NProgress.done();
+      // Return cached events if fetch fails
+      const events = localStorage.getItem("lastEvents");
+      return events ? JSON.parse(events) : [];
+    }
+};
 
  const removeQuery = () => {
     let newurl;
@@ -113,4 +123,4 @@ export const getEvents = async () => {
       newurl = window.location.protocol + "//" + window.location.host;
       window.history.pushState("", "", newurl);
     }
-  }
+};
