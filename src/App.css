@@ -1,38 +1,164 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);
+
 .App {
-  text-align: center;
+    text-align: center;
+    padding: 2% 5%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App * {
+    box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+ul {
+    padding: 1%;
+    list-style: none;
+}
+
+p {
+    margin: 5px 0;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 8px 6px 8px 10px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    line-height: 20px;
+    align-self: center;
+    height: 38px;
+    margin-bottom: 20px;
+}
+
+.city {
+    width: 250px;
+}
+
+#city-search {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    position: relative;
+}
+
+.suggestions {
+    width: 250px;
+    position: absolute;
+    top: 45px;
+    z-index: 2;
+    align-self: center;
+    margin: 0;
+    font-size: 14px;
+    box-shadow: 10px 10px 16px -12px rgba(0, 0, 0, 0.75);
+}
+
+.suggestions > li {
+    text-align: left;
+    padding: 8px 6px 8px 10px;
+    background-color: #eee;
+    cursor: default;
+}
+
+.suggestions > li:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.suggestions > li:hover {
+    background-color: #bcdcdb;
+}
+
+#event-list {
+    padding: 0;
+    max-width: 800px;
+    margin: 0 auto;
   }
+
+.event {
+    padding: 20px;
+    margin-bottom: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    position: relative;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.location {
+    color: #666;
+    font-style: italic;
 }
 
-.App-link {
-  color: #61dafb;
+.event-created {
+    color: #888;
+    font-size: 0.9em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.details-btn {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.details-btn:hover {
+    background: #e0e0e0;
+}
+
+.alerts-container {
+    position: fixed;
+    top: 0px;
+    left: 20px;
+    width: 250px;
+    z-index: 1000;
+}
+
+/*.charts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 3rem;
+}*/
+
+@media (max-width: 768px) {
+    .App {
+        padding: 1rem;
+      }
+
+      .event {
+        margin: 10px;
+        padding: 15px;
+      }
+    
+      #event-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .city {
+        width: 100%;
+        max-width: 250px;
+      }
+
+      .event-summary h2 {
+        font-size: 1.2em;
+      }
+
+}
+
+    
+@media (max-width: 480px) {
+    
+      
+    h1 {
+        font-size: 24px;
+    }
 }
