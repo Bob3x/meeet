@@ -10,7 +10,7 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
 
     useEffect(() => {
       setSuggestions(allLocations);
-    }, [`${allLocations}`]);
+    }, [allLocations]);
 
     
         const handleInputChanged = (event) => {
@@ -43,6 +43,7 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
     return (
         <div id="city-search">
             <input
+                id="city-search-input"
                 type="text"
                 className="city"
                 placeholder="Search for a city"
