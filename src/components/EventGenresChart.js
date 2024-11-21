@@ -6,10 +6,10 @@ import { PieChart, Pie, Legend, Cell, ResponsiveContainer } from 'recharts';
 
 const EventGenresChart = ({ events }) => {
     const [data, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const genres = ['React', 'JavaScript', 'Node', 'jQuery', 'AngularJS'];
 
     useEffect(() => {
-        
         const getData = () => {
             const data = genres.map((genre) => {
                 const filteredEvents = events.filter((event) => event.summary.includes(genre));
@@ -20,9 +20,16 @@ const EventGenresChart = ({ events }) => {
             })
             return data;
         }
-        setData(getData());
+        try {
+            setIsLoading(true);
+            setData(getData());
+        } catch (error) {
+            console.error("Error displaying data:", error);
+        } finally {
+            setIsLoading(false);
+        }   
     }, [`${events}`]);
-    
+
     const COLORS = {
         React: '#1dd3b0',
         JavaScript: '#8884d8',
@@ -48,6 +55,9 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, percent, index }
       </text>
     ) : null;
   }
+
+if (isLoading) return <div>Loading chart data...</div>;
+if (!events.length) return <div>No events to display</div>;
 
 return (
     <ResponsiveContainer width="99%" height={400}>
