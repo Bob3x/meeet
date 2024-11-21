@@ -20,7 +20,7 @@ export const extractLocations = (events) => {
 
 const checkToken = async (accessToken) => {
     const response = await fetch(
-      `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
+      `https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token=${accessToken}`
     );
     const result = await response.json();
     return result;
@@ -52,7 +52,7 @@ const checkToken = async (accessToken) => {
     try {
       const encodeCode = encodeURIComponent(code);
    
-      const response = await fetch("https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token" + encodeCode);
+      const response = await fetch(`https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token/${encodeCode}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
