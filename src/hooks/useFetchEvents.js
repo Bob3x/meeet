@@ -36,7 +36,7 @@ const useFetchEvents = (currentCity, currentNOE) => {
     fetchData();
   }, [currentCity, currentNOE]);
 
-  return { events, allLocations, isLoading, warningAlert, errorAlert, setWarningAlert, setErrorAlert, };
+  return { events, allLocations, isLoading, warningAlert, errorAlert, setWarningAlert, setErrorAlert };
 };
 
 export default useFetchEvents;
