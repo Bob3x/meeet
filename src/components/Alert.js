@@ -19,16 +19,36 @@ class Alert extends Component {
             borderRadius: "7px",
             borderColor: this.color,
             textAlign: "center",
-            fontSize: "12px",
-            margin: "10px 0",
-            padding: "10px"
+            fontSize: "13px",
+            margin: "15px 0",
+            padding: "10px",
+            position: "relative"
         }
+    }
+
+    getCloseButtonStyle = () => {
+      return {
+            position: "absolute",
+            right: "10px",
+            top: "60%",
+            transform: "translateY(-50%)",
+            background: "none",
+            border: "none",
+            color: "rgb(0, 0, 0, 1)",
+            cursor: "pointer",
+            fontSize: "24px",
+            padding: "0 5px"
+      }
     }
 
     render() {
         return (
           <div className="Alert">
-            <p style={this.getStyle()}>{this.props.text}</p>
+            <p style={this.getStyle()}>{this.props.text}
+              <button onClick={this.props.onClose} style={this.getCloseButtonStyle()}>
+              ×
+              </button>
+            </p>
           </div>
         );
       }
@@ -46,8 +66,8 @@ class InfoAlert extends Alert {
 class ErrorAlert extends Alert {
         constructor(props) {
           super(props);
-          this.color = 'red';
-          this.bgColor ='light red';
+          this.color = "rgb(160, 0, 0)"; // red
+          this.bgColor = "rgb(244, 67, 54)"; // light red
         }
         }
 
