@@ -7,13 +7,13 @@ const Event = ({ event }) => {
     return (
         <li className="event">
             <div className="event-summary">
-                <h2>{event && event.summary}</h2>
-                <p className="location">{event && event.location}</p>
-                <p className="event-created">{event && event.created}</p>
+                <h2>{event.summary}</h2>
+                <p className="location">{event.location}</p>
+                <p className="event-created">{event.created}</p>
             </div>
             {showDetails ? 
                 <div data-testid="event-details">
-                    <p>{event && event.description}</p>
+                    <p>{event.description}</p>
                 </div>
              : null
              }
