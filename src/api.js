@@ -27,13 +27,13 @@ const checkToken = async (accessToken) => {
   };
 
   export const getAccessToken = async () => {
-    const accessToken = localStorage.getItem('access_token');
+    const accessToken = localStorage.getItem("access_token");
     const tokenCheck = accessToken && (await checkToken(accessToken));
 
   if (!accessToken || tokenCheck.error) {
-    localStorage.removeItem("access_token");
+    await localStorage.removeItem("access_token");
     const searchParams = new URLSearchParams(window.location.search);
-    const code = searchParams.get("code");
+    const code = await searchParams.get("code");
     if (!code) {
       const response = await fetch(
         "https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/get-auth-url"
@@ -50,9 +50,9 @@ const checkToken = async (accessToken) => {
 
   const getToken = async (code) => {
     try {
-      const encodeCode = encodeURIComponent(code);
+      const encodedCode = encodeURIComponent(code);
    
-      const response = await fetch(`https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token/${encodeCode}`);
+      const response = await fetch(`https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token/${encodedCode}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
