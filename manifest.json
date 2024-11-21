@@ -1,6 +1,12 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Meeet",
+  "name": "Meeet App - Find Local Events",
+  "description": "Find and track events in your city",
+  "orientation": "any",
+  "categories": [
+    "events",
+    "entertainment"
+  ],
   "icons": [
     {
       "src": "favicon.ico",
