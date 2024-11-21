@@ -1,17 +1,31 @@
 // src/components/CitySearch.js
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 
 const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [query, setQuery] = useState("");
     const [suggestions, setSuggestions] = useState([]);
+    const wrapperRef = useRef(null);
 
     useEffect(() => {
       setSuggestions(allLocations);
     }, [allLocations]);
 
+      useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+              setShowSuggestions(false);
+          }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+
+      return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+      };
+      }, []);
     
         const handleInputChanged = (event) => {
           const value = event.target.value;
@@ -41,7 +55,7 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
       };
 
     return (
-        <div id="city-search">
+        <div ref={wrapperRef} id="city-search" style={{positin: "relative" }}>
             <input
                 id="city-search-input"
                 type="text"
@@ -51,20 +65,20 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert  }) => {
                 onFocus={() => setShowSuggestions(true)}
                 onChange={handleInputChanged}
             />
-            {showSuggestions ?
+            {showSuggestions && (
         <ul className="suggestions">
-          {suggestions.map((suggestion) => {
-            return <li onClick={handleItemClicked} key={suggestion}>{suggestion}</li>
-          })}
-          <li key='See all cities' onClick={handleItemClicked}>
+          {suggestions.map((suggestion) => (
+           <li onClick={handleItemClicked} key={suggestion} onKeyPress={(e) => e.key === 'Enter' && handleItemClicked(e)} tabIndex={0}>{suggestion}</li>
+          ))}
+          <li key="all" onClick={() => handleItemClicked({ target: { textContent: "See all cities" } })}>
             <b>See all cities</b>
           </li>
         </ul>
-        : null
-      }
+      )}
     </div>
-  )
-}
+  );
+};
+
 CitySearch.propTypes = {
   allLocations: PropTypes.array.isRequired,
   setCurrentCity: PropTypes.func.isRequired,
