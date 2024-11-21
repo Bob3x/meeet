@@ -31,16 +31,17 @@ const checkToken = async (accessToken) => {
     const tokenCheck = accessToken && (await checkToken(accessToken));
 
   if (!accessToken || tokenCheck.error) {
-    await localStorage.removeItem("access_token");
+    localStorage.removeItem("access_token");
     const searchParams = new URLSearchParams(window.location.search);
-    const code = await searchParams.get("code");
+    const code = searchParams.get("code");
     if (!code) {
       const response = await fetch(
         "https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/get-auth-url"
       );
       const result = await response.json();
       const { authUrl } = result;
-      return (window.location.href = authUrl);
+      window.location.href = authUrl;
+       return;
     }
     return code && getToken(code);
   }
