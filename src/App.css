@@ -33,6 +33,24 @@ input[type="number"] {
     margin-bottom: 20px;
 }
 
+.number-input {
+    width: 80px;
+    text-align: center;
+
+}
+
+.number-of-events-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5px;
+    gap: 5px;
+}
+
+.number-of-events {
+    display: block;
+}
+
 .city {
     width: 250px;
 }
@@ -57,7 +75,7 @@ input[type="number"] {
 
 .suggestions > li {
     text-align: left;
-    padding: 8px 6px 8px 10px;
+    padding: 8px 8px 8px 10px;
     background-color: #eee;
     cursor: default;
 }
@@ -122,12 +140,12 @@ input[type="number"] {
     z-index: 1000;
 }
 
-/*.charts-container {
+.charts-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 16px;
-    margin-bottom: 3rem;
-}*/
+    margin-bottom: 5rem;
+}
 
 @media (max-width: 768px) {
     .App {
@@ -150,6 +168,9 @@ input[type="number"] {
 
       .event-summary h2 {
         font-size: 1.2em;
+      }
+      .charts-container {
+        grid-template-columns: 1fr;
       }
 
 }
