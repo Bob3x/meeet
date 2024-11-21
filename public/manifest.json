@@ -4,8 +4,8 @@
   "description": "Find and track events in your city",
   "orientation": "any",
   "categories": [
-    "event",
-    "entertainmen"
+    "events",
+    "entertainment"
   ],
   "icons": [
     {
