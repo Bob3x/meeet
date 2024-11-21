@@ -1,59 +1,51 @@
 // src/App.js
 
-import { useEffect, useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
+import useFetchEvents from './hooks/useFetchEvents';
 import CitySearch from './components/CitySearch';
 import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
-import CityEventsChart from './components/CityEventsChart';
-import EventGenresChart from './components/EventGenresChart';
-import { extractLocations, getEvents } from './api';
-import { InfoAlert, ErrorAlert, WarningAlert } from './components/Alert';
+import { InfoAlert, WarningAlert, ErrorAlert } from './components/Alert';
 
 import './App.css';
 
+const EventGenresChart = lazy(() => import('./components/EventGenresChart'));
+const CityEventsChart = lazy(() => import('./components/CityEventsChart'));
 
 const App = () => {
-  const [events, setEvents] = useState([]);
   const [currentNOE, setCurrentNOE] = useState(32);
-  const [allLocations, setAllLocations] = useState([]);
   const [currentCity, setCurrentCity] = useState("See all cities");
   const [infoAlert, setInfoAlert] = useState("");
-  const [errorAlert, setErrorAlert] = useState("");
-  const [warningAlert, setWarningAlert] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const allEvents = await getEvents();
-        const filteredEvents = currentCity === "See all cities" 
-          ? allEvents
-          : allEvents.filter(event => event.location === currentCity);
-        setEvents(filteredEvents.slice(0, currentNOE));
-        setAllLocations(extractLocations(allEvents));
-      } catch (error) {
-        setErrorAlert("Failed to fetch events");
-      }
-    };
+  const { events, allLocations, isLoading, errorAlert, warningAlert, setErrorAlert, setWarningAlert } = useFetchEvents(currentCity, currentNOE);
 
-    // Check online status
-    if (navigator.onLine) {
-      setWarningAlert("");
-    } else {
-      setWarningAlert("You are currently offline");
+  const handleCloseAlert = (alertType) => {
+    switch(alertType) {
+      case 'info':
+        setInfoAlert("");
+        break;
+      case 'error':
+        setErrorAlert("");
+        break;
+      case 'warning':
+        setWarningAlert("");
+        break;
+      default:
+        break;
     }
-    fetchData();
-  }, [currentCity, currentNOE]);
+  };
 
   return (
     <div className="App">
-      
-      <h1>Meeet App</h1>
-      <p>Find events in nearby cities</p>
+      <header className="header">
+      <h1>Meeet</h1>
+      <p>Find events in your city</p>
       <div className="alerts-container">
-        {infoAlert.length ? <InfoAlert text={infoAlert} /> : null}
-        {errorAlert.length ? <ErrorAlert text={errorAlert} /> : null}
-        {warningAlert.length ? <WarningAlert text={warningAlert} /> : null}
+        {infoAlert &&  <InfoAlert text={infoAlert} onClose={() => handleCloseAlert('info')} />}
+        {errorAlert && <ErrorAlert text={errorAlert} onClose={() => handleCloseAlert('error')} />}
+        {warningAlert && <WarningAlert text={warningAlert} onClose={() => handleCloseAlert('warning')} />}
       </div>
+      </header>
       <CitySearch
         allLocations={allLocations}
         setCurrentCity={setCurrentCity}
@@ -63,11 +55,31 @@ const App = () => {
         setCurrentNOE={setCurrentNOE}
         setErrorAlert={setErrorAlert}
       />
-      <div className="charts-container">
+      {isLoading ? (
+        <div className="loading-container">Loading...</div>
+      ) : (
+        <div className="charts-container">
+        <Suspense fallback={<div>Loading...</div>}>
+        <div className="chart-wrapper">
       <EventGenresChart events={events} />
+      </div>
+      <div className="chart-wrapper">
       <CityEventsChart allLocations={allLocations} events={events} />
       </div>
+      </Suspense>
+      </div>
+      )}
       <EventList events={events} />
+      <footer className="footer">
+        <div className="footer-content">
+            <p>&copy; 2024 Meeet App. All rights reserved.</p>
+            <div className="footer-links">
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Use</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
     </div>
   );
 };
