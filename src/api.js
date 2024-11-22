@@ -19,56 +19,81 @@ export const extractLocations = (events) => {
 };
 
 const checkToken = async (accessToken) => {
+  try {
     const response = await fetch(
       `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
     );
     const result = await response.json();
+    console.log("Token check result:", result);
     return result;
-  };
+  } catch (error) {
+    console.error("Token check failed:", error);
+    return { error: true };
+  }
+};
 
-  export const getAccessToken = async () => {
+export const getAccessToken = async () => {
+  try {
     console.log("Starting auth flow");
+    console.log("localStorage contents:", { ...localStorage });
+    
     const accessToken = localStorage.getItem("access_token");
-    const tokenCheck = accessToken && (await checkToken(accessToken));
     console.log("Current token:", accessToken);
 
-  if (!accessToken || tokenCheck.error) {
-    await localStorage.removeItem("access_token");
-    const searchParams = new URLSearchParams(window.location.search);
-    const code = await searchParams.get("code");
-    if (!code) {
-      const response = await fetch(
-        "https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/get-auth-url"
-      )
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
-      const result = await response.json();
-      const { authUrl } = result;
-      window.location.href = authUrl;
-       return;
-    }
-    return code && getToken(code);
-  }
-  return accessToken;
-  };
+    if (!accessToken) {
+      const searchParams = new URLSearchParams(window.location.search);
+      const code = searchParams.get("code");
+      console.log("Auth code from URL:", code);
 
-  const getToken = async (code) => {
-    try {
-      const encodedCode = encodeURIComponent(code);
-   
-      const response = await fetch("https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token" + encodedCode);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      if (!code) {
+        console.log("No code, requesting auth URL");
+        const response = await fetch(
+          "https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/get-auth-url"
+        );
+        const result = await response.json();
+        console.log("Got auth URL:", result);
+        window.location.href = result.authUrl;
+        return null;
       }
-      const { access_token } = await response.json();
-      access_token && localStorage.setItem("access_token", access_token);
-      return access_token;
-      } catch (error) {
-      console.error('Token error:', error);
-      error.json();
-      }
-  };
+      
+      console.log("Has code, getting token");
+      return getToken(code);
+    }
+
+    const tokenCheck = await checkToken(accessToken);
+    if (tokenCheck.error) {
+      console.log("Token invalid, clearing");
+      localStorage.removeItem("access_token");
+      window.location.reload();
+      return null;
+    }
+
+    return accessToken;
+  } catch (error) {
+    console.error("Auth error:", error);
+    throw error;
+  }
+};
+
+const getToken = async (code) => {
+  try {
+    const encodedCode = encodeURIComponent(code);
+    const response = await fetch(
+      `https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token/${encodedCode}`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const json = await response.json();
+    localStorage.setItem("access_token", json.access_token);
+    return json.access_token;
+  } catch (error) {
+    console.error("Token exchange failed:", error);
+    throw error;
+  }
+};
 
 /**
  *
