@@ -69,7 +69,6 @@ export const getAccessToken = async () => {
       window.location.reload();
       return null;
     }
-
     return accessToken;
   } catch (error) {
     console.error("Auth error:", error);
@@ -79,9 +78,9 @@ export const getAccessToken = async () => {
 
 const getToken = async (code) => {
   try {
-    const encodedCode = encodeURIComponent(code);
+    const encodeCode = encodeURIComponent(code);
     const response = await fetch(
-      `https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token/${encodedCode}`
+      `https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token/${encodeCode}`
     );
     console.log("Token response:", response);
     
@@ -89,13 +88,12 @@ const getToken = async (code) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const json = await response.json();
-    console.log("Token data:", json);
-    localStorage.setItem("access_token", json.access_token);
-    return json.access_token;
+    const { access_token } = await response.json();
+    access_token && localStorage.setItem("access_token", access_token);
+    return access_token;
   } catch (error) {
     console.error("Token exchange failed:", error);
-    throw error;
+    error.json();
   }
 };
 
@@ -126,7 +124,7 @@ export const getEvents = async () => {
 
     if (token) {
       removeQuery();
-      const url =  "https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/get-events" + token;
+      const url =  "https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/get-events/" + token;
       const response = await fetch(url);
       const result = await response.json();
       if (result) {
