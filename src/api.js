@@ -27,8 +27,10 @@ const checkToken = async (accessToken) => {
   };
 
   export const getAccessToken = async () => {
+    console.log("Starting auth flow");
     const accessToken = localStorage.getItem("access_token");
     const tokenCheck = accessToken && (await checkToken(accessToken));
+    console.log("Current token:", accessToken);
 
   if (!accessToken || tokenCheck.error) {
     await localStorage.removeItem("access_token");
@@ -37,7 +39,10 @@ const checkToken = async (accessToken) => {
     if (!code) {
       const response = await fetch(
         "https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/get-auth-url"
-      );
+      )
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
       const result = await response.json();
       const { authUrl } = result;
       window.location.href = authUrl;
