@@ -49,7 +49,10 @@ export const getAccessToken = async () => {
         console.log("No code, requesting auth URL");
         const response = await fetch(
           "https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/get-auth-url"
-        );
+        )
+        .then(res => res.json())
+        .then(console.log)
+        .catch(console.error);
         const result = await response.json();
         console.log("Got auth URL:", result);
         window.location.href = result.authUrl;
@@ -80,7 +83,10 @@ const getToken = async (code) => {
     const encodedCode = encodeURIComponent(code);
     const response = await fetch(
       `https://7u8afzt0kl.execute-api.eu-central-1.amazonaws.com/dev/api/token/${encodedCode}`
-    );
+    )
+    .then(res => res.json())
+    .then(console.log)
+    .catch(console.error);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
